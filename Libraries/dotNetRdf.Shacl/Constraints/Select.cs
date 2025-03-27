@@ -69,7 +69,18 @@ namespace VDS.RDF.Shacl.Constraints
                 BindPath(query.RootGraphPattern, propertyShape.Path.SparqlPath);
             }
 
-            var solutions = (SparqlResultSet)dataGraph.ExecuteQuery(query);
+            SparqlResultSet solutions;
+            
+            if (dataGraph is DatasetWrapperGraph)
+            {
+                var dataset = (dataGraph as DatasetWrapperGraph).Dataset;
+                ISparqlQueryProcessor processor = new LeviathanQueryProcessor(dataset);
+                solutions = (SparqlResultSet)processor.ProcessQuery(query);
+            }
+            else
+            {
+                solutions = (SparqlResultSet)dataGraph.ExecuteQuery(query);
+            }
 
             if (solutions.IsEmpty)
             {
