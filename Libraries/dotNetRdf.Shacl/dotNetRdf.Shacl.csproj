@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <!-- NuGet Package Metadata. Additional values are inherited from ../Directory.Build.props -->
     <PackageId>dotNetRdf.Shacl</PackageId>
     <Title>dotNetRdf SHACL Support</Title>
@@ -16,11 +20,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="../../README.md" Pack="true" PackagePath="/"/>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\dotNetRdf.Core\dotNetRdf.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="shapesDatasetShapesDataset.trig" />
   </ItemGroup>
 
 </Project>
