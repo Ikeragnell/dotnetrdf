@@ -53,7 +53,8 @@ public class GraphPattern
     private readonly List<GraphPattern> _graphPatterns = new List<GraphPattern>();
     private readonly List<ITriplePattern> _triplePatterns = new List<ITriplePattern>();
     private readonly List<ISparqlFilter> _unplacedFilters = new List<ISparqlFilter>();
-    private readonly List<IAssignmentPattern> _unplacedAssignments = new List<IAssignmentPattern>();
+        // TODO: TEMPORARY FIX FOR QUERY COPY/ BINDING NOT ASSIGNED
+    public List<IAssignmentPattern> _unplacedAssignments = new List<IAssignmentPattern>();
     private ISparqlFilter _filter;
     private BindingsPattern _data;
     private bool _break = false, _broken = false;
