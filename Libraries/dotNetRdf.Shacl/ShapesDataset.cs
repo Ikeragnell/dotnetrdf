@@ -119,6 +119,22 @@ WHERE {{
           }}
         }}
       }}
+      UNION {{
+        SELECT * {{
+          ?shapesGraph shds:targetGraphPattern ?pattern .
+          VALUES ?target {{{0}}}
+          FILTER(REGEX(STR(?target), ?pattern))
+        }}
+      }}
+      UNION {{
+        SELECT * {{
+          GRAPH ?shapesGraph {{
+            ?shapesGraph shds:targetGraphPattern ?pattern .
+            VALUES ?target {{{0}}}
+            FILTER(REGEX(STR(?target), ?pattern))
+          }}
+        }}
+      }}
       BIND(IF(?target = shds:all, ?all, IF(?target = shds:named, ?named, ?target)) AS ?targetDataGraph)
     }}
   }}
@@ -135,6 +151,22 @@ WHERE {{
         SELECT * {{
           GRAPH ?shapesGraph {{
             ?shapesGraph shds:targetGraphExclude ?target .
+          }}
+        }}
+      }}
+      UNION {{
+        SELECT * {{
+          ?shapesGraph shds:targetGraphExcludePattern ?pattern .
+          VALUES ?target {{{0}}}
+          FILTER(REGEX(STR(?target), ?pattern))
+        }}
+      }}
+      UNION {{
+        SELECT * {{
+          GRAPH ?shapesGraph {{
+            ?shapesGraph shds:targetGraphExcludePattern ?pattern .
+            VALUES ?target {{{0}}}
+            FILTER(REGEX(STR(?target), ?pattern))
           }}
         }}
       }}
