@@ -94,6 +94,17 @@ namespace VDS.RDF.Shacl
         /// Gets a node representing TargetGraphDefault.
         /// </summary>
         public static IUriNode TargetGraphDefault { get; } = ShaclDsNode("default");
+
+        /// <summary>
+        /// Gets a node representing TargetGraphPattern.
+        /// </summary>
+        public static IUriNode TargetGraphPattern { get; } = ShaclDsNode("targetGraphPattern");
+
+        /// <summary>
+        /// Gets a node representing TargetGraphExcludePattern.
+        /// </summary>
+        public static IUriNode TargetGraphExcludePattern { get; } = ShaclDsNode("targetGraphExcludePattern");
+
         private static IUriNode ShaclDsNode(string name) => AnyNode($"{BaseUri}{name}");
 
         private static IUriNode AnyNode(string uri) => Factory.CreateUriNode(Factory.UriFactory.Create(uri));
