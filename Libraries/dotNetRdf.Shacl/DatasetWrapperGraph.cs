@@ -17,91 +17,51 @@ namespace VDS.RDF.Shacl
         internal DatasetWrapperGraph(InMemoryDataset dataset)
         {
             Dataset = dataset;
+            addDefaultAsNamedGraph();
         }
 
         internal DatasetWrapperGraph(InMemoryDataset dataset, IRefNode graphName) : this(dataset)
         {
-            GraphName = graphName;
-            if (graphName.Equals(VocabularyDs.TargetGraphDefault))
-                GraphName = null;
-
-            IGraph g = dataset[GraphName];
+            IGraph g = dataset[graphName];
             this.Assert(g.Triples);
             SetAsDefaultGraph();
         }
 
         internal DatasetWrapperGraph(InMemoryDataset dataset, IGraph graph) : this(dataset)
         {
-            GraphName = new BlankNode("combinedGraph");
-
-            var combinedGraph = new Graph(GraphName);
-            foreach (var triple in graph.Triples)
-            {
-                combinedGraph.Assert(triple);
-            }
-            Dataset.AddGraph(combinedGraph);
             this.Assert(graph.Triples);
             SetAsDefaultGraph();
         }
 
+        private void addDefaultAsNamedGraph()
+        {
+            if (!Dataset.HasGraph((IRefNode)VocabularyDs.TargetGraphDefault))
+            {
+                IGraph defaultGraph = Dataset[(IRefNode)null];
+                var defaultAsNamedGraph = new Graph(VocabularyDs.TargetGraphDefault.Uri);
+                foreach (var triple in defaultGraph.Triples)
+                {
+                    defaultAsNamedGraph.Assert(triple);
+                }
+                Dataset.AddGraph(defaultAsNamedGraph);
+            }
+        }
+
         private void SetAsDefaultGraph()
         {
-
-            // If already default graph do nothing
-            if (GraphName == null)
-                return;
-
-            IGraph namedGraph = Dataset[GraphName];
-            IGraph defaultGraph = Dataset[(IRefNode)null];
-
-            var namedAsDefaultGraph = new Graph();
-            var defaultAsNamedGraph = new Graph(VocabularyDs.TargetGraphDefault.Uri);
-
-            foreach (var triple in namedGraph.Triples)
-            {
-                namedAsDefaultGraph.Assert(triple);
-            }
-            foreach (var triple in defaultGraph.Triples)
-            {
-                defaultAsNamedGraph.Assert(triple);
-            }
-
             Dataset.RemoveGraph((IRefNode)null);
-            Dataset.RemoveGraph(GraphName);
-
-            Dataset.AddGraph(defaultAsNamedGraph);
-            Dataset.AddGraph(namedAsDefaultGraph);
+            var newDefaultGraph = new Graph();
+            newDefaultGraph.Assert(this.Triples); 
+            Dataset.AddGraph(newDefaultGraph);
         }
 
         internal void ResetDefaultGraph()
         {
-            // If already default graph do nothing
-            if (GraphName == null)
-                return;
-
-            IGraph defaultAsNamedGraph = Dataset[(IRefNode)VocabularyDs.TargetGraphDefault];
-            IGraph namedAsDefaultGraph = Dataset[(IRefNode)null];
-
+            var defaultAsNamedGraph = Dataset[(IRefNode)VocabularyDs.TargetGraphDefault];
             var defaultGraph = new Graph();
-            var namedGraph = new Graph(GraphName);
-
-            foreach (var triple in defaultAsNamedGraph.Triples)
-            {
-                defaultGraph.Assert(triple);
-            }
-            foreach (var triple in namedAsDefaultGraph.Triples)
-            {
-                namedGraph.Assert(triple);
-            }
-
-            Dataset.RemoveGraph((IRefNode)VocabularyDs.TargetGraphDefault);
+            defaultGraph.Assert(defaultAsNamedGraph.Triples);
             Dataset.RemoveGraph((IRefNode)null);
-
             Dataset.AddGraph(defaultGraph);
-
-            if (GraphName is not BlankNode){
-                Dataset.AddGraph(namedGraph);
-            }
         }
     }
 }
