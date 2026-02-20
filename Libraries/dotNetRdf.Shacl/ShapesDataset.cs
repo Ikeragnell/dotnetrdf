@@ -1,4 +1,4 @@
-/*
+﻿/*
 // <copyright>
 // dotNetRDF is free and open source software licensed under the MIT License
 // -------------------------------------------------------------------------
@@ -100,7 +100,7 @@ namespace VDS.RDF.Shacl
     {
       var namedGraphs = string.Join(" ", dataDataset.GraphNames.Where(node => node != null).Select(graphName => "<" + graphName + ">"));
       var query = new SparqlParameterizedString(string.Format(@"
-PREFIX shds: <http://www.w3.org/ns/shacl-dataset#>
+PREFIX shds: <https://w3id.org/shacl-ds#>
 SELECT DISTINCT ?shapesGraph ?targetDataGraph
 WHERE {{
   {{
