@@ -1,4 +1,4 @@
-/*
+﻿/*
 // <copyright>
 // dotNetRDF is free and open source software licensed under the MIT License
 // -------------------------------------------------------------------------
@@ -36,7 +36,7 @@ namespace VDS.RDF.Shacl
         /// <summary>
         /// The SHACL-DS base URI.
         /// </summary>
-        public const string BaseUri = "http://www.w3.org/ns/shacl-dataset#";
+        public const string BaseUri = "https://w3id.org/shacl-ds#";
 
         private static readonly NodeFactory Factory = new NodeFactory(new NodeFactoryOptions());
 
